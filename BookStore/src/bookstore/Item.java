@@ -76,7 +76,7 @@ public class Item {
 
     /**
      * Hash code of the Item class
-     * @return 
+     * @return a hash code integer value 
      */
     @Override
     public int hashCode() {
@@ -122,8 +122,7 @@ public class Item {
         str += String.format("%-10s : %s\n", "Category", category);
         str += String.format("%-10s : %s\n", "Gift", isGift ? "Yes" : "No");
         
-        return str;
-        
+        return str;        
     }
 
     public String getItemNo() {

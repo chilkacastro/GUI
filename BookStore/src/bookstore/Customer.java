@@ -27,6 +27,7 @@ import static bookstore.BookStore.items;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
+import jdk.nashorn.internal.ir.BreakNode;
 
 /**
  * A simple class of customer
@@ -37,6 +38,9 @@ public class Customer extends User {
     private ArrayList<Item> itemsInCart;
     private static int nextCustomerId = 1;
 
+    /**
+     * Default constructor
+     */
     public Customer() {
         super();
         super.setId(String.format("%c%04d", 'U', nextCustomerId++));
@@ -75,25 +79,26 @@ public class Customer extends User {
     /**
      * Updates the VIP level of a customer. The cost (number of points) 
      * to update depends on the current VIP level of the customer
-     * @return 
+     * @return True if the customer has enough points to update his/her VIP level 
+     * and False if not
      */
     private boolean updateVip() {
+        int currentPoint = getPoint();
         int vipPoint1 = 50;
         int vipPoint2 = 100;
         int vipPoint3 = 150;
         
-        
-        if (vipLevel == 0 && calcPoint() >= vipPoint1) {
+        if (vipLevel == 0 && currentPoint >= vipPoint1) {
             vipLevel = 1;
             return true;
         }
         
-        if (vipLevel == 1 && calcPoint() >= vipPoint2) {
+        if (vipLevel == 1 && currentPoint >= vipPoint2) {
             vipLevel = 2;
             return true;
         }
         
-        if (vipLevel == 2 && calcPoint() >= vipPoint3) {
+        if (vipLevel == 2 && currentPoint >= vipPoint3) {
             vipLevel = 3;
             return true;
         }
@@ -140,13 +145,13 @@ public class Customer extends User {
         int totalPoint = 0;
 
         if (vipLevel == 0)
-                totalPoint = (int) calcPrice();
+            totalPoint = (int) calcPrice();
         if (vipLevel == 1)
-                totalPoint = (int) (regularVipRatio * calcPrice());
+            totalPoint = (int) (regularVipRatio * calcPrice());
         if (vipLevel == 2)
-                totalPoint = (int) (goldenVipRatio * calcPrice());
+            totalPoint = (int) (goldenVipRatio * calcPrice());
         if (vipLevel == 3)
-                totalPoint = (int) (diamondVipRatio * calcPrice());   
+            totalPoint = (int) (diamondVipRatio * calcPrice());   
         
         if (totalPoint > extraPointThreshold)
             totalPoint += extraPoint;
@@ -254,25 +259,27 @@ public class Customer extends User {
      */
     @Override
     public boolean pointToGift(Item item) {
+        // Checks if customer has enough points to use as payment for a gift
         int giftPoint = 100;
-
         if (getPoint() < giftPoint)
             return false;
         
         // Items that can be used as gift | isGift is TRUE
         ArrayList<Item> giftItems = new ArrayList<>();
-        
-        for (Item bookStoreItem : items) {
+        for (Item bookStoreItem : items) 
             if (bookStoreItem.isGift && bookStoreItem.amount > 0)
                 giftItems.add(bookStoreItem);
-        }
       
-        for (Item giftItem : giftItems) 
+        for (Item giftItem : giftItems) {
             for (Item bookStoreItem : items)
-                if (giftItem.equals(item))
+                if (giftItem.equals(item) && giftItem.equals(bookStoreItem)) {
                     bookStoreItem.amount--;
+                    break;
+                }
+            break;
+        }
         
-        // reduce the points of the user
+        // Pay gift with points(reduce customer points)
         setPoint(getPoint() - giftPoint);
                
         return true;
@@ -322,10 +329,10 @@ public class Customer extends User {
     public String toString() {
         String str = "";
         
-        str += String.format("%-10s : %d\n", "Vip Level", vipLevel);
+        str += String.format("%-10s: %d\n", "Vip Level", vipLevel);
         str += String.format("%-10s:\n", "Items");
-        for (Item item : itemsInCart)
-            str += String.format("%s\n", item);
+        for (Item cartItem : itemsInCart)
+            str += String.format("%s\n", cartItem);
         
         return str;
     }

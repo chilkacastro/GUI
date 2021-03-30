@@ -26,15 +26,17 @@ package bookstore;
 import java.util.Objects;
 
 /**
- * A simple class of Cd
+ * A simple class of CD
  * @author Chilka Castro
  */
 public class Cd extends Item{
     protected String name;
     protected Person artist;
-   
     private static int nextCdNo = 1;
 
+    /**
+     * Default constructor
+     */
     public Cd() {
         super();
         this.itemNo = String.format("%c%04d", 'C', nextCdNo++);
@@ -69,7 +71,10 @@ public class Cd extends Item{
         this.artist = new Person(cd.artist);
     }
 
-    
+    /**
+     * Creates a hash code value for a CD object
+     * @return a hash code value for a CD object
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -79,6 +84,11 @@ public class Cd extends Item{
         return hash;
     }
 
+    /**
+     * Checks if two objects are the same or not
+     * @param obj the object to be compared with 
+     * @return True if the objects are the same and False if not
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -97,13 +107,17 @@ public class Cd extends Item{
         return true;
     }
 
+    /**
+     * Creates a String that represents a CD object
+     * @return a String that represents a CD object
+     */
     @Override
     public String toString() {
         String str = "";
         
         str += super.toString();
-        str += String.format("%-10s : s\n", "", name);
-        str += String.format("%-10s : s\n", "Artist", artist);
+        str += String.format("%-10s : %s\n", "Name", name);
+        str += String.format("%-10s : %s\n", "Artist", artist);
         
         return str;
     }
@@ -131,5 +145,4 @@ public class Cd extends Item{
     public static void setNextCdNo(int nextCdNo) {
         Cd.nextCdNo = nextCdNo;
     }
-
 }

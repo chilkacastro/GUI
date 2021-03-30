@@ -148,5 +148,4 @@ public class Book extends Item {
     public static void setNextBookNo(int nextBookNo) {
         Book.nextBookNo = nextBookNo;
     }
-
 }

@@ -35,7 +35,6 @@ public class Employee extends User {
     private double salary;
     private static int nextEmployeeId = 1;
 
-
     /**
      * Default constructor
      */
@@ -71,7 +70,7 @@ public class Employee extends User {
     }
 
     /**
-     * Calculates the points for an employee 
+     * Calculates the points of an employee 
      * @return the amount of points of the employee
      */
     @Override
@@ -98,10 +97,10 @@ public class Employee extends User {
         // Items that can be used as gift
         ArrayList<Item> giftItems = new ArrayList<>();
         
-        for (Item bookStoreItem : items) {
+        for (Item bookStoreItem : items) 
             if (bookStoreItem.isGift && bookStoreItem.amount > 0)
                 giftItems.add(bookStoreItem);
-        }
+        
         // get the random gift
         Random rand = new Random();
         Item item = giftItems.get(rand.nextInt(giftItems.size()));
@@ -164,12 +163,15 @@ public class Employee extends User {
             if (bookStoreItem.isGift && bookStoreItem.amount > 0)
                 giftItems.add(bookStoreItem);
         
-        // finds the specific gift the employee wants 
-        for (Item giftItem : giftItems) 
+        // Finds the specific gift the employee wants 
+        for (Item giftItem : giftItems) {
             for (Item bookStoreItem : items)
-                if (giftItem.equals(item))
+                if (giftItem.equals(item) && giftItem.equals(bookStoreItem)) {
                     bookStoreItem.amount--;
-        
+                    break;
+                }
+            break;
+        }
         setPoint(getPoint() - giftPoint);
                
         return true;

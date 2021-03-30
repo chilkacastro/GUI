@@ -71,7 +71,7 @@ public class Person {
     }
 
     /**
-     * Creates a hash code for a person object
+     * Creates a hash code integer value for a person object
      * @return a hash code integer value for a person object
      */
     @Override
@@ -156,5 +156,4 @@ public class Person {
     public void setEmail(String email) {
         this.email = email;
     }
-     
 }
