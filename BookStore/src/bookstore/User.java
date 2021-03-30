@@ -170,6 +170,7 @@ public abstract class User extends Person implements Gift {
                
         return true;
     }
+
     /**
      * Creates a hash code for a user 
      * @return a hash code value for a user

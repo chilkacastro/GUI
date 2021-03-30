@@ -76,11 +76,11 @@ public class BookStore {
     }       
     
     /**
-     * Pays points to each employee
+     * Pays points to each employee and update the employee's points
      */
     public static void payEmployeesPoint() {
         for (Employee employee : employees)
-            employee.setPoint(employee.calcPoint());
+            employee.setPoint(employee.getPoint() + employee.calcPoint());
     }
 
     public static ArrayList<Item> getItems() {
@@ -119,5 +119,4 @@ public class BookStore {
         Book b1 = new Book("Kafka On The Shore", a1, 17.99, 50, "Fiction", true);
         System.out.println(b1);
     }
- 
 }

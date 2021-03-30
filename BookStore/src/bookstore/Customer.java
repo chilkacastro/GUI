@@ -26,8 +26,6 @@ package bookstore;
 import static bookstore.BookStore.items;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
-import jdk.nashorn.internal.ir.BreakNode;
 
 /**
  * A simple class of customer
@@ -92,17 +90,14 @@ public class Customer extends User {
             vipLevel = 1;
             return true;
         }
-        
         if (vipLevel == 1 && currentPoint >= vipPoint2) {
             vipLevel = 2;
             return true;
         }
-        
         if (vipLevel == 2 && currentPoint >= vipPoint3) {
             vipLevel = 3;
             return true;
         }
-        
         return false; 
     }
     
@@ -125,7 +120,7 @@ public class Customer extends User {
         double totalPrice = 0;
         
         for (Item cartItem : itemsInCart)
-            totalPrice += cartItem.price * cartItem.amount;
+            totalPrice += (cartItem.price * cartItem.amount);
         
         return totalPrice;
     }
@@ -187,101 +182,6 @@ public class Customer extends User {
         // clear items in cart
         for (int i = 0; i < itemsInCart.size(); i++)
             itemsInCart.remove(i--);
-        return true;
-    }
-
-    /**
-     * Finds a random gift, could be a book or a CD
-     * @return True if customer can exchange it for gift and False if not
-     */
-    @Override
-    public boolean pointToGift() {
-        // Check first the user points if its lower than the gift points cost
-        int giftPoint = 50;
-        if (getPoint() < giftPoint)
-            return false;
-
-        // Items that can be used as gift
-        ArrayList<Item> giftItems = new ArrayList<>();
-        
-        for (Item bookStoreItem : items) {
-            if (bookStoreItem.isGift && bookStoreItem.amount > 0)
-                giftItems.add(bookStoreItem);
-        }
-        // get the random gift
-        Random rand = new Random();
-        Item item = giftItems.get(rand.nextInt(giftItems.size()));
-        item.amount--;
-        
-        // reduce the points of the user
-        setPoint(getPoint() - giftPoint);
-  
-        return true;
-    }
-
-    /**
-     * Finds a random gift of specific type
-     * @param type the gift type of the item that the customer wants
-     * @return True if the customer can exchange it for a gift and False if not
-     */
-    @Override
-    public boolean pointToGift(String type) {
-        // Check first the user points if its lower than the gift points cost
-        int giftPoint = 70;
-        if (getPoint() < giftPoint)
-            return false;
-
-        // Items that can be used as gift
-        ArrayList<Item> giftItems = new ArrayList<>();
-        for (Item bookStoreItem : items) {
-            if (bookStoreItem instanceof Book && type.equalsIgnoreCase("book") 
-                    && bookStoreItem.isGift && bookStoreItem.amount > 0)
-                    giftItems.add(bookStoreItem);
-            if (bookStoreItem instanceof  Cd && type.equalsIgnoreCase("cd") 
-                    && bookStoreItem.isGift && bookStoreItem.amount > 0)
-                    giftItems.add(bookStoreItem);      
-        }
-        // get the random gift
-        Random rand = new Random();
-        Item item = giftItems.get(rand.nextInt(giftItems.size()));
-        item.amount--;
-        
-        // reduce the points of the user
-        setPoint(getPoint() - giftPoint);
-  
-        return true;
-    }
-
-    /**
-     * Finds a specific gift based on the itemNo
-     * @param item item that the customer wants
-     * @return True if the customer can exchange it for a gift and False if not
-     */
-    @Override
-    public boolean pointToGift(Item item) {
-        // Checks if customer has enough points to use as payment for a gift
-        int giftPoint = 100;
-        if (getPoint() < giftPoint)
-            return false;
-        
-        // Items that can be used as gift | isGift is TRUE
-        ArrayList<Item> giftItems = new ArrayList<>();
-        for (Item bookStoreItem : items) 
-            if (bookStoreItem.isGift && bookStoreItem.amount > 0)
-                giftItems.add(bookStoreItem);
-      
-        for (Item giftItem : giftItems) {
-            for (Item bookStoreItem : items)
-                if (giftItem.equals(item) && giftItem.equals(bookStoreItem)) {
-                    bookStoreItem.amount--;
-                    break;
-                }
-            break;
-        }
-        
-        // Pay gift with points(reduce customer points)
-        setPoint(getPoint() - giftPoint);
-               
         return true;
     }
 
