@@ -116,11 +116,11 @@ public class Item {
     public String toString() {
         String str = "";
 
-        str += String.format("%-10s : %s\n", "Item Number", itemNo);
-        str += String.format("%-10s : %.2f\n", "Price", price);
-        str += String.format("%-10s : %d\n", "Amount", amount);
-        str += String.format("%-10s : %s\n", "Category", category);
-        str += String.format("%-10s : %s\n", "Gift", isGift ? "Yes" : "No");
+        str += String.format("%-15s : %s\n", "Item Number", itemNo);
+        str += String.format("%-15s : %.2f\n", "Price", price);
+        str += String.format("%-15s : %d\n", "Amount", amount);
+        str += String.format("%-15s : %s\n", "Category", category);
+        str += String.format("%-15s : %s\n", "Gift", isGift ? "Yes" : "No");
         
         return str;        
     }

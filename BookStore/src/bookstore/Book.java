@@ -117,8 +117,8 @@ public class Book extends Item {
         String str = "";
         
         str += super.toString();
-        str += String.format("%-10s : %s\n", "Title", title);
-        str += String.format("%-10s :\n\n", "Author/s");
+        str += String.format("%-15s : %s\n", "Title", title);
+        str += String.format("%-15s\n\n", "Author/s");
         for (Person author : authors) 
             str += String.format("%s\n", author);
 

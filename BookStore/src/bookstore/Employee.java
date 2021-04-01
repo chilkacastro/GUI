@@ -75,6 +75,7 @@ public class Employee extends User {
         
         int point = 0;
         point += (int) salary * salaryRatio;
+        salary = 0;                          // returns to zero for next payment
         
         return point;
     }

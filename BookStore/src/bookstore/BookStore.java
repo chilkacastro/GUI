@@ -40,9 +40,10 @@ public class BookStore {
      */
     public static void addItem(Item item) {
         for (Item bookStoreItem: items) 
-            if (bookStoreItem.equals(item))
+            if (bookStoreItem.equals(item)) 
                 bookStoreItem.setAmount(bookStoreItem.amount + item.amount);
-        items.add(item);
+
+        items.add(item);        //if not in store, directly add the input item
     } 
     
     /**
@@ -61,15 +62,22 @@ public class BookStore {
         customers.add(customer);
     }
     
+    /**
+     * Searches items based on the input keyword
+     * @param keyword the input keyword to look for in the item title/name
+     * @return a collection of items that has the input keyword in their titles
+     * or names
+     */
     public static ArrayList<Item> searchItem(String keyword) {
+        keyword = keyword.toLowerCase();
         ArrayList<Item> searchedItems = new ArrayList<>();
         
         for (Item item : items) {
             if (item instanceof Book)
-                if (((Book) item).title.contains(keyword))
+                if (((Book) item).title.toLowerCase().contains(keyword))
                     searchedItems.add(item);
             if (item instanceof Cd)
-                if (((Cd) item).name.contains(keyword))
+                if (((Cd) item).name.toLowerCase().contains(keyword))
                     searchedItems.add(item);
         }    
         return searchedItems;    
@@ -78,7 +86,7 @@ public class BookStore {
     /**
      * Pays points to each employee and update the employee's points
      */
-    public static void payEmployeesPoint() {
+    public static void payEmployeesPoints() {
         for (Employee employee : employees)
             employee.setPoint(employee.getPoint() + employee.calcPoint());
     }

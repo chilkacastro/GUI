@@ -82,19 +82,19 @@ public class Customer extends User {
      */
     private boolean updateVip() {
         int currentPoint = getPoint();
-        int vipPoint1 = 50;
-        int vipPoint2 = 100;
-        int vipPoint3 = 150;
+        int updatePointCost = 50;
+        int updatePointCost2 = 100;
+        int updatePointCost3 = 150;
         
-        if (vipLevel == 0 && currentPoint >= vipPoint1) {
+        if (vipLevel == 0 && currentPoint >= updatePointCost) {
             vipLevel = 1;
             return true;
         }
-        if (vipLevel == 1 && currentPoint >= vipPoint2) {
+        if (vipLevel == 1 && currentPoint >= updatePointCost2) {
             vipLevel = 2;
             return true;
         }
-        if (vipLevel == 2 && currentPoint >= vipPoint3) {
+        if (vipLevel == 2 && currentPoint >= updatePointCost3) {
             vipLevel = 3;
             return true;
         }
@@ -160,16 +160,13 @@ public class Customer extends User {
      * False if not.
      */
     public boolean checkout() {
-        boolean available;
         for (Item cartItem : itemsInCart) {
-            available = false;
-            for (Item bookStoreItem : items)
-                if (cartItem.equals(bookStoreItem) && cartItem.amount <= bookStoreItem.amount) {
-                    available = true;
+            for (Item bookStoreItem : items) {
+                if (cartItem.equals(bookStoreItem) && cartItem.amount <= bookStoreItem.amount) 
                     break;
-                }
-            if (!available)        // one item unavailable means failed checkout
-                return false;
+                
+                return false;      // one item unavailable means failed checkout
+            }
         }
         // pay
         calcPrice();

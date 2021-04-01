@@ -78,7 +78,7 @@ public abstract class User extends Person implements Gift {
 
     /**
      * Finds a random gift, could be a book or a CD
-     * @return True if customer can exchange it for gift and False if not
+     * @return True if user can exchange it for gift and False if not
      */
     @Override
     public boolean pointToGift() {
@@ -107,8 +107,8 @@ public abstract class User extends Person implements Gift {
 
     /**
      * Finds a random gift of specific type
-     * @param type the gift type of the item that the customer wants
-     * @return True if the customer can exchange it for a gift and False if not
+     * @param type the gift type of the item that the user wants
+     * @return True if the user can exchange it for a gift and False if not
      */
     @Override
     public boolean pointToGift(String type) {
@@ -140,7 +140,7 @@ public abstract class User extends Person implements Gift {
 
     /**
      * Finds a specific gift based on the itemNo
-     * @param item item that the customer wants
+     * @param item item that the user wants
      * @return True if the customer can exchange it for a gift and False if not
      */
     @Override
@@ -156,13 +156,17 @@ public abstract class User extends Person implements Gift {
             if (bookStoreItem.isGift && bookStoreItem.amount > 0)
                 giftItems.add(bookStoreItem);
       
+        boolean isItemFound;
         for (Item giftItem : giftItems) {
+            isItemFound = false;
             for (Item bookStoreItem : items)
                 if (giftItem.equals(item) && giftItem.equals(bookStoreItem)) {
+                    isItemFound = true;
                     bookStoreItem.amount--;
                     break;
                 }
-            break;
+            if (isItemFound)   // only need to find one item, so break if found already
+                break;
         }
         
         // Pay gift with points(reduce customer points)
