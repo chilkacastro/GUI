@@ -27,6 +27,7 @@ import static bookstore.BookStore.items;
 import java.util.ArrayList;
 import java.util.Objects;
 
+
 /**
  * A simple class of customer
  * @author Chilka Castro
@@ -107,9 +108,22 @@ public class Customer extends User {
      * @param amount the amount the customer wants to buy/ or add to his/her cart
      */
     public void addItemTocart(Item item, int amount) {
-        Item cartItem = new Item(item);
-        cartItem.amount = amount;
-        itemsInCart.add(cartItem);
+        Book book;
+        Book bookCartItem;
+        Cd cd;
+        Cd cdCartItem;
+        if (item instanceof Book) {
+            book = (Book) item;
+            bookCartItem = new Book(book);
+            bookCartItem.amount = amount;
+            itemsInCart.add(bookCartItem);
+        }
+        if (item instanceof Cd) {
+            cd = (Cd) item;
+            cdCartItem = new Cd(cd);
+            cdCartItem.amount = amount;
+            itemsInCart.add(cdCartItem);
+        }
     }
     
     /**
@@ -118,11 +132,16 @@ public class Customer extends User {
      */
     public double calcPrice() {
         double totalPrice = 0;
+        double fedTaxRatio = 0.05;
+        double proTaxRatio = 0.1;
         
         for (Item cartItem : itemsInCart)
             totalPrice += (cartItem.price * cartItem.amount);
         
-        return totalPrice;
+        double fedTax = totalPrice * fedTaxRatio;
+        double proTax = totalPrice * proTaxRatio;
+        
+        return totalPrice + fedTax + proTax;
     }
 
     /**
@@ -160,25 +179,35 @@ public class Customer extends User {
      * False if not.
      */
     public boolean checkout() {
+        boolean available;
         for (Item cartItem : itemsInCart) {
-            for (Item bookStoreItem : items) {
-                if (cartItem.equals(bookStoreItem) && cartItem.amount <= bookStoreItem.amount) 
+            available = false;
+            for (Item bookStoreItem : items) 
+                if (cartItem.equals(bookStoreItem) && cartItem.amount <= bookStoreItem.amount) {
+                    available = true;
                     break;
-                
-                return false;      // one item unavailable means failed checkout
-            }
+                }
+            // after the inner loop
+            
+            if (!available)
+                return false;
         }
         // pay
         calcPrice();
+        
         // update the book store items
-        for (Item bookStoreItem : items)
+        for (Item bookStoreItem : items) {
             for (Item cartItem : itemsInCart)
-                bookStoreItem.setAmount(bookStoreItem.amount - cartItem.amount);
+                if (bookStoreItem.equals(cartItem)) 
+                    bookStoreItem.amount -= cartItem.amount;
+        }
         // update the points
-        setPoint(calcPoint());
+        setPoint(getPoint() + calcPoint());
+        
         // clear items in cart
         for (int i = 0; i < itemsInCart.size(); i++)
             itemsInCart.remove(i--);
+        
         return true;
     }
 
@@ -226,11 +255,17 @@ public class Customer extends User {
     public String toString() {
         String str = "";
         
-        str += String.format("%-10s: %d\n", "Vip Level", vipLevel);
-        str += String.format("%-10s:\n", "Items");
-        for (Item cartItem : itemsInCart)
-            str += String.format("%s\n", cartItem);
-        
+        str += super.toString();
+        str += String.format("\t%-15s : %d\n\n", "Vip Level", vipLevel);
+        str += String.format("%s\n\n", "-------------------Cart Items---------------------");
+        for (Item cartItem : itemsInCart) {
+            str += String.format("%s\n\n", cartItem);
+            str += String.format("%s\n", "---------------------------------------------------");
+        }
+        str += String.format("%-15s : %d\n", "Current Point", getPoint());
+        str += String.format("%-15s : $%.2f\n", "Total Price", calcPrice());
+        str += String.format("%-15s : %d\n", "Purchase Point", calcPoint());
+        str += String.format("%-15s : %s\n\n", "Checkout", checkout() ? "Success" : "Failed");
         return str;
     }
 
@@ -257,5 +292,50 @@ public class Customer extends User {
     public static void setNextCustomerId(int nextCustomerId) {
         Customer.nextCustomerId = nextCustomerId;
     }
+    
+    public static void main(String[] args) {
+        Person p1 = new Person("Haruki Murakami", "Male", "123456789", "harukimurakami@yahoo.com");
+        Person p2 = new Person("John Green", "Male", "987654321", "johngreen@gmail.com");
+       
+        ArrayList<Person> a1 = new ArrayList<>();
+        ArrayList<Person> a2 = new ArrayList<>();
+        a1.add(p1);
+        a1.add(p2);
+       
+        Book b1 = new Book("Kafka On The Shore", a1, 17.99, 50, "Fiction", true);
+        Book b2 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
+        Cd c1 = new Cd("After Laughter", p1, 9.14, 50, "Pop Rock, New wave, Synth-pop, Power pop", false);
+        Cd c2 = new Cd("Love in Tokyo", p2, 10.53, 50, "Alternative/Indie", true);
+        Cd c3 = new Cd("Viva La Vida or Death and All His Friends", p1, 8.97, 50, "Rock", false);
+      
+        Item itemb1 = (Item) b1;
+        Item itemb2 = (Item) b2;
+        Item itemc1 = (Item) c1;
+        Item itemc2 = (Item) c2;
+        Item itemc3 = (Item) c3;
+        items.add(itemb1);
+        items.add(itemb2);
+        items.add(itemc1);
+        items.add(itemc2);
+        items.add(itemc3);
+
+//        String str = "";
+//        
+//        str += String.format("%-10s\n", "Bookstore Items");
+//        for (Item item : items)  {
+//            str += String.format("%s\n", "---------------------------------------------");
+//            str += String.format("%s\n", item);
+//        }
+//        
+//          System.out.println(str);
+                  
+        ArrayList<Item> items1 = new ArrayList<>();
+        Customer cu2 = new Customer(1, items1, 60, "Maegan Young", "Female", 
+                "12731910", "maeganyoung@gmail.com");
+        cu2.addItemTocart(b2, 4);
+        cu2.addItemTocart(b1, 4);
+        System.out.println(cu2);
+    }
+   
 }
   

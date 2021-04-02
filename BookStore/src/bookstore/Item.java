@@ -78,12 +78,13 @@ public class Item {
      * Hash code of the Item class
      * @return a hash code integer value 
      */
-    @Override
+    @Override    
     public int hashCode() {
-        int hash = 5;
-        hash = 41 * hash + (int) (Double.doubleToLongBits(this.price) 
+        int hash = 7;
+        hash = 43 * hash + Objects.hashCode(this.itemNo);
+        hash = 43 * hash + (int) (Double.doubleToLongBits(this.price) 
                 ^ (Double.doubleToLongBits(this.price) >>> 32));
-        hash = 41 * hash + Objects.hashCode(this.category);
+        hash = 43 * hash + Objects.hashCode(this.category);
         return hash;
     }
 
@@ -103,6 +104,8 @@ public class Item {
         final Item other = (Item) obj;
         if (Double.doubleToLongBits(this.price) != Double.doubleToLongBits(other.price))
             return false;
+        if (!Objects.equals(this.itemNo, other.itemNo))
+            return false;
         if (!Objects.equals(this.category, other.category))
             return false;
         return true;
@@ -117,14 +120,14 @@ public class Item {
         String str = "";
 
         str += String.format("%-15s : %s\n", "Item Number", itemNo);
-        str += String.format("%-15s : %.2f\n", "Price", price);
+        str += String.format("%-15s : $%.2f\n", "Price", price);
         str += String.format("%-15s : %d\n", "Amount", amount);
         str += String.format("%-15s : %s\n", "Category", category);
         str += String.format("%-15s : %s\n", "Gift", isGift ? "Yes" : "No");
         
         return str;        
     }
-
+    
     public String getItemNo() {
         return itemNo;
     }

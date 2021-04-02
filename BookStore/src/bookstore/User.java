@@ -219,8 +219,9 @@ public abstract class User extends Person implements Gift {
     public String toString() {
         String str = "";
         
-        str += String.format("%-10s : %s\n", "Id", id);
-        str += String.format("%-10s : %d\n", "Point", point);
+        str += super.toString();
+        str += String.format("\t%-15s : %s\n", "Id", id);
+        str += String.format("\t%-15s : %d\n", "Point", point);
         
         return str;
     }

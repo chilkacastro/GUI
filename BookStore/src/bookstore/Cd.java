@@ -116,8 +116,8 @@ public class Cd extends Item{
         String str = "";
         
         str += super.toString();
-        str += String.format("%-10s : %s\n", "Name", name);
-        str += String.format("%-10s : %s\n", "Artist", artist);
+        str += String.format("%-15s : %s\n\n", "Name", name);
+        str += String.format("%-15s\n %s\n", "Artist", artist);
         
         return str;
     }

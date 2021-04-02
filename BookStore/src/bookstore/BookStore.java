@@ -30,9 +30,9 @@ import java.util.ArrayList;
  * @author Chilka Castro
  */
 public class BookStore {
-    protected static ArrayList<Item> items;
-    protected static ArrayList<Employee> employees;
-    protected static ArrayList<Customer> customers;
+    protected static ArrayList<Item> items = new ArrayList<>();
+    protected static ArrayList<Employee>employees = new ArrayList<>();
+    protected static ArrayList<Customer> customers = new ArrayList<>();
 
     /**
      * Adds an item object into the items list
@@ -90,7 +90,7 @@ public class BookStore {
         for (Employee employee : employees)
             employee.setPoint(employee.getPoint() + employee.calcPoint());
     }
-
+    
     public static ArrayList<Item> getItems() {
         return items;
     }
@@ -113,18 +113,5 @@ public class BookStore {
 
     public static void setCustomers(ArrayList<Customer> customers) {
         BookStore.customers = customers;
-    }
-    
-    // Main Method
-    public static void main(String[] args) {
-        Person p1 = new Person("Haruki Murakami", "Male", "123456789", "harukimurakami@yahoo.com");
-        Person p2 = new Person("Haruki Murakami2", "Male", "0987654132", "harukimurakami02@yahoo.com");
-        Person p3 = new Person("Haruki Murakami3", "Male", "16231839242", "harukimurakami03@yahoo.com");
-        ArrayList<Person> a1 = new ArrayList<>();
-        a1.add(p1);
-        a1.add(p2);
-        a1.add(p3);
-        Book b1 = new Book("Kafka On The Shore", a1, 17.99, 50, "Fiction", true);
-        System.out.println(b1);
     }
 }

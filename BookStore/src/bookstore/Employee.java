@@ -75,7 +75,6 @@ public class Employee extends User {
         
         int point = 0;
         point += (int) salary * salaryRatio;
-        salary = 0;                          // returns to zero for next payment
         
         return point;
     }
@@ -123,7 +122,7 @@ public class Employee extends User {
         String str = "";
         
         str += super.toString();
-        str += String.format("%-10s : %.2f\n", "Salary", salary);
+        str += String.format("\t%-15s : %.2f\n", "Salary", salary);
         
         return str;
     }
