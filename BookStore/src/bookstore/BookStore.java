@@ -39,11 +39,13 @@ public class BookStore {
      * @param item the item to be added
      */
     public static void addItem(Item item) {
-        for (Item bookStoreItem: items) 
-            if (bookStoreItem.equals(item)) 
-                bookStoreItem.setAmount(bookStoreItem.amount + item.amount);
-
-        items.add(item);        //if not in store, directly add the input item
+        for (Item bookStoreItem : items) {
+            if (bookStoreItem.equals(item)) {
+                bookStoreItem.amount += item.amount;
+                break;
+            }
+            items.add(item);  //if not, directly add the input item
+        }
     } 
     
     /**
@@ -114,4 +116,55 @@ public class BookStore {
     public static void setCustomers(ArrayList<Customer> customers) {
         BookStore.customers = customers;
     }
+     
+//    public static void main(String[] args) {
+//        Person p1 = new Person("Haruki Murakami", "Male", "123456789", "harukimurakami@yahoo.com");
+//        Person p2 = new Person("John Green", "Male", "987654321", "johngreen@gmail.com");
+//       
+//        ArrayList<Person> a1 = new ArrayList<>();
+//        ArrayList<Person> a2 = new ArrayList<>();
+//        a1.add(p1);
+//        a1.add(p2);
+//       
+//        Book b1 = new Book("Kafka On The Shore", a1, 17.99, 50, "Fiction", true);
+//        Book b3 = new Book("Kafka On The Shore", a1, 17.99, 150, "Fiction", true);
+//        Book b2 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
+//        Book b4 = new Book("The Invisible life of Addie LaRue", a1, 17.99, 50, "Fiction", true);
+//        Book b5 = new Book("Nowegian Wood", a1, 17.99, 60, "Fiction", true);
+//       // Book b6 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
+//        Book b7 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
+//        Book b8 = new Book("Echo North", a1, 17.99, 50, "Fiction", true);
+//        Cd c1 = new Cd("After Laughter", p1, 9.14, 50, "Pop Rock, New wave, Synth-pop, Power pop", false);
+//        Cd c2 = new Cd("Love in Tokyo", p2, 10.53, 50, "Alternative/Indie", true);
+//        Cd c3 = new Cd("Viva La Vida or Death and All His Friends", p1, 8.97, 50, "Rock", false);
+//
+//        items.add(b4);
+//        items.add(b3);
+//        items.add(c1);
+//        items.add(c2);
+//        items.add(c3);
+//        items.add(b2);
+//        items.add(b1);
+//      //  items.add(b8);
+//        items.add(c3);
+//
+////        String str = "";
+//        
+////        str += String.format("%-10s\n", "Bookstore Items");
+////        for (Item item : items)  {
+////            str += String.format("%s\n", "---------------------------------------------");
+////            str += String.format("%s\n", item);
+////        }
+////        
+////          System.out.println(str);
+//                  
+//        ArrayList<Item> items1 = new ArrayList<>();
+//        Customer cu2 = new Customer(1, items1, 200, "Maegan Young", "Female", 
+//                "12731910", "maeganyoung@gmail.com");
+////        cu2.addItemTocart(b2, 4);
+////        cu2.addItemTocart(b1, 4);
+////        System.out.println(cu2);
+//          System.out.println(cu2.pointToGift(c2));
+//    }
 }
+

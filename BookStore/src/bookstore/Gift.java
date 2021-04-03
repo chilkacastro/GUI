@@ -29,10 +29,26 @@ package bookstore;
  */
 public interface Gift {
     
-    public boolean pointToGift() ;
+    /**
+     * Finds a random gift, could be a book or a CD
+     * @return True if the user have enough point to exchange points for a gift
+     * and False if not.
+     */
+    public boolean pointToGift();
     
-    public boolean pointToGift(String type) ;
+    /**
+     * Finds a random gift of a specific type
+     * @param type input type of the gift the user wants
+     * @return True if the user have enough point to exchange points for a gift
+     * and False if not.
+     */
+    public boolean pointToGift(String type);
     
-    public boolean pointToGift(Item item) ;
-    
+    /**
+     * Finds a specific gift 
+     * @param item the specific item the user wants
+     * @return True if the user have enough point to exchange points for a gift
+     * and False if not.
+     */
+    public boolean pointToGift(Item item);
 }

@@ -79,7 +79,8 @@ public class Book extends Item {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 19 * hash + super.hashCode();
+        hash = 19 * hash + Objects.hashCode(this.price);
+        hash = 19 * hash + Objects.hashCode(this.category);
         hash = 19 * hash + Objects.hashCode(this.title);
         hash = 19 * hash + Objects.hashCode(this.authors);
         return hash;
@@ -99,7 +100,9 @@ public class Book extends Item {
         if (getClass() != obj.getClass())
             return false;
         final Book other = (Book) obj;
-        if (!super.equals(other))
+        if (!Objects.equals(this.price, other.price))
+            return false;
+        if (!Objects.equals(this.category, other.category))
             return false;
         if (!Objects.equals(this.title, other.title))
             return false;
@@ -117,11 +120,13 @@ public class Book extends Item {
         String str = "";
         
         str += super.toString();
-        str += String.format("%-15s : %s\n\n", "Title", title);
-        str += String.format("%-15s\n\n", "Author/s");
-        for (Person author : authors) 
-            str += String.format("%s\n", author);
-
+        str += String.format("%-15s : %s\n", "Title", title);
+        str += String.format("%-15s : ", "Author/s");
+        for (int i = 0; i < authors.size(); i++)
+            if (i == authors.size() - 1)                             // no comma
+                str += String.format("%s", authors.get(i).getName());
+            else                                                     // w/ comma
+                str += String.format("%s, ", authors.get(i).getName());
         return str;
     }
 

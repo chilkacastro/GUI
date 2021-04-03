@@ -50,7 +50,7 @@ public class Customer extends User {
     /**
      * Constructor with all data members
      * @param vipLevel the VIP level of the customer
-     * @param itemsInCart items the customer has added to its cart(items they plan on buying)
+     * @param itemsInCart items the customer has added to the cart
      * @param point the amount of points of the customer
      * @param name the name of the customer
      * @param gender the gender of the customer
@@ -82,21 +82,23 @@ public class Customer extends User {
      * and False if not
      */
     private boolean updateVip() {
-        int currentPoint = getPoint();
-        int updatePointCost = 50;
-        int updatePointCost2 = 100;
-        int updatePointCost3 = 150;
+        int updateCost = 50;
+        int updateCost2 = 100;
+        int updateCost3 = 150;
         
-        if (vipLevel == 0 && currentPoint >= updatePointCost) {
+        if (vipLevel == 0 && getPoint() >= updateCost) {
             vipLevel = 1;
+            setPoint(getPoint() - updateCost);
             return true;
         }
-        if (vipLevel == 1 && currentPoint >= updatePointCost2) {
+        if (vipLevel == 1 && getPoint() >= updateCost2) {
             vipLevel = 2;
+            setPoint(getPoint() - updateCost2);
             return true;
         }
-        if (vipLevel == 2 && currentPoint >= updatePointCost3) {
+        if (vipLevel == 2 && getPoint() >= updateCost3) {
             vipLevel = 3;
+            setPoint(getPoint() - updateCost3);
             return true;
         }
         return false; 
@@ -112,13 +114,14 @@ public class Customer extends User {
         Book bookCartItem;
         Cd cd;
         Cd cdCartItem;
-        if (item instanceof Book) {
+        // instanceof & casting will prevent checkout to be false all the time
+        if (item instanceof Book) {                
             book = (Book) item;
             bookCartItem = new Book(book);
             bookCartItem.amount = amount;
             itemsInCart.add(bookCartItem);
         }
-        if (item instanceof Cd) {
+        if (item instanceof Cd) {                   
             cd = (Cd) item;
             cdCartItem = new Cd(cd);
             cdCartItem.amount = amount;
@@ -136,7 +139,7 @@ public class Customer extends User {
         double proTaxRatio = 0.1;
         
         for (Item cartItem : itemsInCart)
-            totalPrice += (cartItem.price * cartItem.amount);
+            totalPrice += cartItem.price * cartItem.amount;
         
         double fedTax = totalPrice * fedTaxRatio;
         double proTax = totalPrice * proTaxRatio;
@@ -179,35 +182,37 @@ public class Customer extends User {
      * False if not.
      */
     public boolean checkout() {
+        // 1. Check items in cart if available and if bookstore has enough amount
         boolean available;
         for (Item cartItem : itemsInCart) {
             available = false;
             for (Item bookStoreItem : items) 
-                if (cartItem.equals(bookStoreItem) && cartItem.amount <= bookStoreItem.amount) {
+                if (cartItem.equals(bookStoreItem) && 
+                        cartItem.amount <= bookStoreItem.amount) {
                     available = true;
                     break;
                 }
-            // after the inner loop
-            
             if (!available)
-                return false;
+                return false;  // Checkout : failed
         }
-        // pay
+        // 2. Calculate the total price 
         calcPrice();
         
-        // update the book store items
+        // 3. Update the amount of items in the bookstore 
         for (Item bookStoreItem : items) {
             for (Item cartItem : itemsInCart)
                 if (bookStoreItem.equals(cartItem)) 
                     bookStoreItem.amount -= cartItem.amount;
         }
-        // update the points
+        
+        // 4. Update the points of the customer
         setPoint(getPoint() + calcPoint());
         
-        // clear items in cart
+        // 5. Clear the items in the cart of the customer
         for (int i = 0; i < itemsInCart.size(); i++)
             itemsInCart.remove(i--);
         
+        // 6. Checkout : Success
         return true;
     }
 
@@ -256,16 +261,17 @@ public class Customer extends User {
         String str = "";
         
         str += super.toString();
-        str += String.format("\t%-15s : %d\n\n", "Vip Level", vipLevel);
-        str += String.format("%s\n\n", "-------------------Cart Items---------------------");
+        str += String.format("%-15s : %d\n\n", "Vip Level", vipLevel);
+        str += String.format("%s\n\n", "--------------------Cart Items---------------------");
         for (Item cartItem : itemsInCart) {
             str += String.format("%s\n\n", cartItem);
-            str += String.format("%s\n", "---------------------------------------------------");
+            str += String.format("%s\n\n", "--------------------------------------------------");
         }
-        str += String.format("%-15s : %d\n", "Current Point", getPoint());
         str += String.format("%-15s : $%.2f\n", "Total Price", calcPrice());
-        str += String.format("%-15s : %d\n", "Purchase Point", calcPoint());
-        str += String.format("%-15s : %s\n\n", "Checkout", checkout() ? "Success" : "Failed");
+        // Uncomment if checkout is called
+//        str += String.format("%-15s : %d\n", "Purchase Point", calcPoint());
+//        str += String.format("%-15s : %s\n\n", "Checkout", checkout() ? "Success" : "Failed");
+
         return str;
     }
 
@@ -292,50 +298,5 @@ public class Customer extends User {
     public static void setNextCustomerId(int nextCustomerId) {
         Customer.nextCustomerId = nextCustomerId;
     }
-    
-    public static void main(String[] args) {
-        Person p1 = new Person("Haruki Murakami", "Male", "123456789", "harukimurakami@yahoo.com");
-        Person p2 = new Person("John Green", "Male", "987654321", "johngreen@gmail.com");
-       
-        ArrayList<Person> a1 = new ArrayList<>();
-        ArrayList<Person> a2 = new ArrayList<>();
-        a1.add(p1);
-        a1.add(p2);
-       
-        Book b1 = new Book("Kafka On The Shore", a1, 17.99, 50, "Fiction", true);
-        Book b2 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
-        Cd c1 = new Cd("After Laughter", p1, 9.14, 50, "Pop Rock, New wave, Synth-pop, Power pop", false);
-        Cd c2 = new Cd("Love in Tokyo", p2, 10.53, 50, "Alternative/Indie", true);
-        Cd c3 = new Cd("Viva La Vida or Death and All His Friends", p1, 8.97, 50, "Rock", false);
-      
-        Item itemb1 = (Item) b1;
-        Item itemb2 = (Item) b2;
-        Item itemc1 = (Item) c1;
-        Item itemc2 = (Item) c2;
-        Item itemc3 = (Item) c3;
-        items.add(itemb1);
-        items.add(itemb2);
-        items.add(itemc1);
-        items.add(itemc2);
-        items.add(itemc3);
-
-//        String str = "";
-//        
-//        str += String.format("%-10s\n", "Bookstore Items");
-//        for (Item item : items)  {
-//            str += String.format("%s\n", "---------------------------------------------");
-//            str += String.format("%s\n", item);
-//        }
-//        
-//          System.out.println(str);
-                  
-        ArrayList<Item> items1 = new ArrayList<>();
-        Customer cu2 = new Customer(1, items1, 60, "Maegan Young", "Female", 
-                "12731910", "maeganyoung@gmail.com");
-        cu2.addItemTocart(b2, 4);
-        cu2.addItemTocart(b1, 4);
-        System.out.println(cu2);
-    }
-   
 }
   

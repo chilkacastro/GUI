@@ -117,10 +117,10 @@ public class Person {
     public String toString() {
         String str = "";
         
-        str += String.format("\t%-15s : %s\n", "Name", name);
-        str += String.format("\t%-15s : %s\n", "Gender", gender);
-        str += String.format("\t%-15s : %s\n", "Phone Number", phoneNo);
-        str += String.format("\t%-15s : %s\n", "Email", email);
+        str += String.format("%-15s : %s\n", "Name", name);
+        str += String.format("%-15s : %s\n", "Gender", gender);
+        str += String.format("%-15s : %s\n", "Phone Number", phoneNo);
+        str += String.format("%-15s : %s\n", "Email", email);
         
         return str;
     }

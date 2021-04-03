@@ -78,7 +78,8 @@ public class Cd extends Item{
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 67 * hash + super.hashCode();
+        hash = 67 * hash + Objects.hashCode(this.price);
+        hash = 67 * hash + Objects.hashCode(this.category);
         hash = 67 * hash + Objects.hashCode(this.name);
         hash = 67 * hash + Objects.hashCode(this.artist);
         return hash;
@@ -98,7 +99,9 @@ public class Cd extends Item{
         if (getClass() != obj.getClass())
             return false;
         final Cd other = (Cd) obj;
-        if (!super.equals(other))
+        if (!Objects.equals(this.price, other.price))
+            return false;
+        if (!Objects.equals(this.category, other.category))
             return false;
         if (!Objects.equals(this.name, other.name))
             return false;
@@ -116,8 +119,8 @@ public class Cd extends Item{
         String str = "";
         
         str += super.toString();
-        str += String.format("%-15s : %s\n\n", "Name", name);
-        str += String.format("%-15s\n %s\n", "Artist", artist);
+        str += String.format("%-15s : %s\n", "Name", name);
+        str += String.format("%-15s : %s\n", "Artist", artist.getName());
         
         return str;
     }

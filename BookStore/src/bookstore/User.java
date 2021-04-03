@@ -82,24 +82,28 @@ public abstract class User extends Person implements Gift {
      */
     @Override
     public boolean pointToGift() {
-        // Check first the user points if its lower than the gift points cost
+        // 1.  Check first the user points if its lower than the gift points cost
         int giftPoint = 50;
         if (getPoint() < giftPoint)
             return false;
 
-        // Items that can be used as gift
+        // 2. Items that can be used as gift
         ArrayList<Item> giftItems = new ArrayList<>();
         
         for (Item bookStoreItem : items) {
             if (bookStoreItem.isGift && bookStoreItem.amount > 0)
                 giftItems.add(bookStoreItem);
         }
-        // get the random gift
+        // 3. Get the random gift
         Random rand = new Random();
         Item item = giftItems.get(rand.nextInt(giftItems.size()));
-        item.amount--;
         
-        // reduce the points of the user
+        // 4. Reduce the amount of the bookstore item
+        for (Item bookStoreItem : items) 
+            if (bookStoreItem.equals(item))
+                bookStoreItem.amount--;
+        
+        // 5. Reduce the points of the user
         setPoint(getPoint() - giftPoint);
   
         return true;
@@ -112,64 +116,90 @@ public abstract class User extends Person implements Gift {
      */
     @Override
     public boolean pointToGift(String type) {
-        // Check first the user points if its lower than the gift points cost
+        // 1. Check first the user points if its lower than the gift points cost
         int giftPoint = 70;
         if (getPoint() < giftPoint)
             return false;
 
-        // Items that can be used as gift
-        ArrayList<Item> giftItems = new ArrayList<>();
+        // 2. Items that can be used as gift
+        ArrayList<Item> bookGiftItems = new ArrayList<>();
+        ArrayList<Item> cdGiftItems = new ArrayList<>();
         for (Item bookStoreItem : items) {
-            if (bookStoreItem instanceof Book && type.equalsIgnoreCase("book") 
-                    && bookStoreItem.isGift && bookStoreItem.amount > 0)
-                    giftItems.add(bookStoreItem);
-            if (bookStoreItem instanceof  Cd && type.equalsIgnoreCase("cd") 
-                    && bookStoreItem.isGift && bookStoreItem.amount > 0)
-                    giftItems.add(bookStoreItem);      
+            if (bookStoreItem instanceof Book && bookStoreItem.isGift 
+                    && bookStoreItem.amount > 0)
+                bookGiftItems.add(bookStoreItem);
+            if (bookStoreItem instanceof  Cd && bookStoreItem.isGift 
+                    && bookStoreItem.amount > 0)
+                cdGiftItems.add(bookStoreItem);      
         }
-        // get the random gift
+        // 3. Get the random gift
         Random rand = new Random();
-        Item item = giftItems.get(rand.nextInt(giftItems.size()));
-        item.amount--;
+        Item item;
+
+        if (type.equalsIgnoreCase("book")) {
+            item = bookGiftItems.get(rand.nextInt(bookGiftItems.size()));
+            for (Item bookStoreItem : items) 
+                if (bookStoreItem.equals(item))
+                    bookStoreItem.amount--;
+        }
+        if (type.equalsIgnoreCase("cd")) {
+            item = cdGiftItems.get(rand.nextInt(bookGiftItems.size()));
+            for (Item bookStoreItem : items) 
+                if (bookStoreItem.equals(item))
+                    bookStoreItem.amount--;
+        }
         
-        // reduce the points of the user
+        // 4. Reduce the points of the user
         setPoint(getPoint() - giftPoint);
   
         return true;
     }
 
     /**
-     * Finds a specific gift based on the itemNo
-     * @param item item that the user wants
+     * Finds a specific gift 
+     * @param item input item that the user wants
      * @return True if the customer can exchange it for a gift and False if not
      */
     @Override
     public boolean pointToGift(Item item) {
-        // Checks if customer has enough points to use as payment for a gift
+        // 1. Checks if customer has enough points to use as payment for a gift
         int giftPoint = 100;
         if (getPoint() < giftPoint)
             return false;
         
-        // Items that can be used as gift | isGift is TRUE
+        // 2. Take only the items that can be used as a gift
         ArrayList<Item> giftItems = new ArrayList<>();
-        for (Item bookStoreItem : items) 
-            if (bookStoreItem.isGift && bookStoreItem.amount > 0)
-                giftItems.add(bookStoreItem);
-      
+        for (Item bookStoreItem : items) {
+            if (!bookStoreItem.isGift) {
+                if (bookStoreItem.equals(item)) 
+                    return false;
+            }
+            else {
+                if (bookStoreItem.amount > 0) {
+                    if (bookStoreItem.equals(item)) 
+                        giftItems.add(bookStoreItem);
+                }
+                else                            // if store item is out of stock
+                    return false;
+            }
+        }
+        
+        // 3. Find the item in the gift items collection 
         boolean isItemFound;
         for (Item giftItem : giftItems) {
             isItemFound = false;
-            for (Item bookStoreItem : items)
+            for (Item bookStoreItem : items) {
                 if (giftItem.equals(item) && giftItem.equals(bookStoreItem)) {
                     isItemFound = true;
-                    bookStoreItem.amount--;
+                    bookStoreItem.amount--;        // reduce amount of that item
                     break;
                 }
-            if (isItemFound)   // only need to find one item, so break if found already
+            }
+            if (isItemFound)        // only need to find 1 item, stop when found
                 break;
         }
         
-        // Pay gift with points(reduce customer points)
+        // 4. Pay gift with points(reduce customer points)
         setPoint(getPoint() - giftPoint);
                
         return true;
@@ -212,16 +242,16 @@ public abstract class User extends Person implements Gift {
     }
 
     /**
-     * Creates a String that represents the User Class
-     * @return a String that represents a User Class
+     * Creates a String that represents a user
+     * @return a String that represents a user
      */
     @Override
     public String toString() {
         String str = "";
         
         str += super.toString();
-        str += String.format("\t%-15s : %s\n", "Id", id);
-        str += String.format("\t%-15s : %d\n", "Point", point);
+        str += String.format("%-15s : %s\n", "Id", id);
+        str += String.format("%-15s : %d\n", "Point", point);
         
         return str;
     }
@@ -240,5 +270,46 @@ public abstract class User extends Person implements Gift {
 
     public void setPoint(int point) {
         this.point = point;
+    }
+    public static void main(String[] args) {
+        Person p1 = new Person("Haruki Murakami", "Male", "123456789", "harukimurakami@yahoo.com");
+        Person p2 = new Person("John Green", "Male", "987654321", "johngreen@gmail.com");
+       
+        ArrayList<Person> a1 = new ArrayList<>();
+        ArrayList<Person> a2 = new ArrayList<>();
+        a1.add(p1);
+        a1.add(p2);
+       
+        Book b1 = new Book("Kafka On The Shore", a1, 17.99, 50, "Fiction", false);
+        Book b3 = new Book("Kafka On The Shore", a1, 17.99, 150, "Fiction", false);
+        Book b2 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", false);
+        Book b4 = new Book("The Invisible life of Addie LaRue", a1, 17.99, 50, "Fiction", true);
+        Book b5 = new Book("Nowegian Wood", a1, 17.99, 60, "Fiction", true);
+       // Book b6 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
+        Book b7 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
+        Book b8 = new Book("Echo North", a1, 17.99, 50, "Fiction", false);
+        Cd c1 = new Cd("After Laughter", p1, 9.14, 50, "Pop Rock, New wave, Synth-pop, Power pop", false);
+        Cd c2 = new Cd("Love in Tokyo", p2, 10.53, 1, "Alternative/Indie", true);
+        Cd c3 = new Cd("Viva La Vida or Death and All His Friends", p1, 8.97, 1, "Rock", true);
+
+        items.add(b4); //true
+        items.add(b3); //false
+        items.add(c1);//false
+        items.add(c2);//true
+        items.add(c3); //false
+        items.add(b2); //false
+        items.add(b1); //false
+        items.add(b8); // true
+        items.add(c3);//false
+
+       
+        ArrayList<Item> items1 = new ArrayList<>();
+        Customer cu2 = new Customer(1, items1, 100, "Maegan Young", "Female", 
+                "12731910", "maeganyoung@gmail.com");
+
+//        cu2.addItemTocart(b2, 4);
+//        cu2.addItemTocart(b1, 4);
+//        System.out.println(cu2);
+          System.out.println(cu2.pointToGift());
     }
 }
