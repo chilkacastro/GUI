@@ -27,7 +27,6 @@ import static bookstore.BookStore.items;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
 /**
  * A simple class of customer
  * @author Chilka Castro
@@ -82,26 +81,35 @@ public class Customer extends User {
      * and False if not
      */
     private boolean updateVip() {
-        int updateCost = 50;
-        int updateCost2 = 100;
-        int updateCost3 = 150;
+        int[] updateCosts = {50, 100, 150};
         
-        if (vipLevel == 0 && getPoint() >= updateCost) {
-            vipLevel = 1;
-            setPoint(getPoint() - updateCost);
-            return true;
-        }
-        if (vipLevel == 1 && getPoint() >= updateCost2) {
-            vipLevel = 2;
-            setPoint(getPoint() - updateCost2);
-            return true;
-        }
-        if (vipLevel == 2 && getPoint() >= updateCost3) {
-            vipLevel = 3;
-            setPoint(getPoint() - updateCost3);
-            return true;
-        }
-        return false; 
+        if (vipLevel < 0 || vipLevel >= 3)
+            return false;
+        
+        setPoint(getPoint() - updateCosts[vipLevel]);
+        vipLevel++;
+        return true;
+    // My solution
+//        int updateCosts = 50;
+//        int updateCost2 = 100;
+//        int updateCost3 = 150;
+//        
+//        if (vipLevel == 0 && getPoint() >= updateCost) {
+//            vipLevel = 1;
+//            setPoint(getPoint() - updateCost);
+//            return true;
+//        }
+//        if (vipLevel == 1 && getPoint() >= updateCost2) {
+//            vipLevel = 2;
+//            setPoint(getPoint() - updateCost2);
+//            return true;
+//        }
+//        if (vipLevel == 2 && getPoint() >= updateCost3) {
+//            vipLevel = 3;
+//            setPoint(getPoint() - updateCost3);
+//            return true;
+//        }
+//        return false; 
     }
     
     /**
@@ -109,23 +117,17 @@ public class Customer extends User {
      * @param item the item object to be deep copied
      * @param amount the amount the customer wants to buy/ or add to his/her cart
      */
-    public void addItemTocart(Item item, int amount) {
-        Book book;
-        Book bookCartItem;
-        Cd cd;
-        Cd cdCartItem;
+    public void addItemToCart(Item item, int amount) {
         // instanceof & casting will prevent checkout to be false all the time
-        if (item instanceof Book) {                
-            book = (Book) item;
-            bookCartItem = new Book(book);
-            bookCartItem.amount = amount;
-            itemsInCart.add(bookCartItem);
+        if (item instanceof Book) {     
+            Book book = new Book((Book) item);
+            book.amount = amount;
+            itemsInCart.add(book);
         }
-        if (item instanceof Cd) {                   
-            cd = (Cd) item;
-            cdCartItem = new Cd(cd);
-            cdCartItem.amount = amount;
-            itemsInCart.add(cdCartItem);
+        else {               
+            Cd cd = new Cd((Cd) item);
+            cd.amount = amount;
+            itemsInCart.add(cd);
         }
     }
     
@@ -135,7 +137,7 @@ public class Customer extends User {
      */
     public double calcPrice() {
         double totalPrice = 0;
-        double fedTaxRatio = 0.05;
+        double fedTaxRatio = 0.05;  
         double proTaxRatio = 0.1;
         
         for (Item cartItem : itemsInCart)
@@ -154,26 +156,38 @@ public class Customer extends User {
      */
     @Override
     public int calcPoint() {
-        double regularVipRatio = 0.05;
-        double goldenVipRatio = 0.10;
-        double diamondVipRatio = 0.15;
-        int extraPoint = 20;
-        int extraPointThreshold = 200;
-        int totalPoint = 0;
+        int additionalPointThreshold = 200;
+        int additionalPoint = 20;
+        double[] ratios = {0, 0.05, 0.1, 0.15};
+        
+        // call calcPrice() method
+        double spent = calcPrice();
+        
+        // to view a value in the ratios array based on vipLevel as the index
+        return (int) (((1 + ratios[vipLevel]) * calcPrice()) + 
+                spent >= additionalPointThreshold ? additionalPoint : 0);
 
-        if (vipLevel == 0)
-            totalPoint = (int) calcPrice();
-        if (vipLevel == 1)
-            totalPoint = (int) (regularVipRatio * calcPrice());
-        if (vipLevel == 2)
-            totalPoint = (int) (goldenVipRatio * calcPrice());
-        if (vipLevel == 3)
-            totalPoint = (int) (diamondVipRatio * calcPrice());   
-        
-        if (totalPoint > extraPointThreshold)
-            totalPoint += extraPoint;
-        
-        return totalPoint;
+// My solution(corrected version + 1--> so points is higher than the price)
+//        double regularVipRatio = 0.05
+//        double goldenVipRatio = 0.10
+//        double diamondVipRatio = 0.15
+//        int extraPoint = 20;
+//        int extraPointThreshold = 200;
+//        int totalPoint = 0;
+//
+//        if (vipLevel == 0)
+//            totalPoint = (int) calcPrice();
+//        if (vipLevel == 1)
+//            totalPoint = (int) (1 + regularVipRatio * calcPrice());
+//        if (vipLevel == 2)
+//            totalPoint = (int) (1 + goldenVipRatio * calcPrice());
+//        if (vipLevel == 3)
+//            totalPoint = (int) (1 + diamondVipRatio * calcPrice());   
+//        
+//        if (totalPoint > extraPointThreshold)
+//            totalPoint += extraPoint;
+//        
+//        return totalPoint;
     }
 
     /**
@@ -187,23 +201,22 @@ public class Customer extends User {
         for (Item cartItem : itemsInCart) {
             available = false;
             for (Item bookStoreItem : items) 
-                if (cartItem.equals(bookStoreItem) && 
-                        cartItem.amount <= bookStoreItem.amount) {
+                if (cartItem.equals(bookStoreItem) && cartItem.amount <= bookStoreItem.amount) {
                     available = true;
                     break;
                 }
-            if (!available)
+            if (!available)    // this line is outside of the inner for loop
                 return false;  // Checkout : failed
         }
+        
         // 2. Calculate the total price 
         calcPrice();
         
         // 3. Update the amount of items in the bookstore 
-        for (Item bookStoreItem : items) {
+        for (Item bookStoreItem : items) 
             for (Item cartItem : itemsInCart)
                 if (bookStoreItem.equals(cartItem)) 
                     bookStoreItem.amount -= cartItem.amount;
-        }
         
         // 4. Update the points of the customer
         setPoint(getPoint() + calcPoint());

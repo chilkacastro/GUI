@@ -90,18 +90,16 @@ public abstract class User extends Person implements Gift {
         // 2. Items that can be used as gift
         ArrayList<Item> giftItems = new ArrayList<>();
         
-        for (Item bookStoreItem : items) {
+        for (Item bookStoreItem : items) 
             if (bookStoreItem.isGift && bookStoreItem.amount > 0)
                 giftItems.add(bookStoreItem);
-        }
+
         // 3. Get the random gift
         Random rand = new Random();
-        Item item = giftItems.get(rand.nextInt(giftItems.size()));
+        Item randomItem = giftItems.get(rand.nextInt(giftItems.size()));
         
         // 4. Reduce the amount of the bookstore item
-        for (Item bookStoreItem : items) 
-            if (bookStoreItem.equals(item))
-                bookStoreItem.amount--;
+        randomItem.amount--;
         
         // 5. Reduce the points of the user
         setPoint(getPoint() - giftPoint);
@@ -122,33 +120,17 @@ public abstract class User extends Person implements Gift {
             return false;
 
         // 2. Items that can be used as gift
-        ArrayList<Item> bookGiftItems = new ArrayList<>();
-        ArrayList<Item> cdGiftItems = new ArrayList<>();
-        for (Item bookStoreItem : items) {
-            if (bookStoreItem instanceof Book && bookStoreItem.isGift 
+        ArrayList<Item> giftItems = new ArrayList<>();    
+        for (Item bookStoreItem: items) 
+            if (bookStoreItem.getClass().getName().equalsIgnoreCase(type) 
                     && bookStoreItem.amount > 0)
-                bookGiftItems.add(bookStoreItem);
-            if (bookStoreItem instanceof  Cd && bookStoreItem.isGift 
-                    && bookStoreItem.amount > 0)
-                cdGiftItems.add(bookStoreItem);      
-        }
+                giftItems.add(bookStoreItem);
+        
         // 3. Get the random gift
         Random rand = new Random();
-        Item item;
+        Item randomItem = giftItems.get(rand.nextInt(giftItems.size()));
+        randomItem.amount--;
 
-        if (type.equalsIgnoreCase("book")) {
-            item = bookGiftItems.get(rand.nextInt(bookGiftItems.size()));
-            for (Item bookStoreItem : items) 
-                if (bookStoreItem.equals(item))
-                    bookStoreItem.amount--;
-        }
-        if (type.equalsIgnoreCase("cd")) {
-            item = cdGiftItems.get(rand.nextInt(bookGiftItems.size()));
-            for (Item bookStoreItem : items) 
-                if (bookStoreItem.equals(item))
-                    bookStoreItem.amount--;
-        }
-        
         // 4. Reduce the points of the user
         setPoint(getPoint() - giftPoint);
   
@@ -162,44 +144,19 @@ public abstract class User extends Person implements Gift {
      */
     @Override
     public boolean pointToGift(Item item) {
-        // 1. Checks if customer has enough points to use as payment for a gift
+        // 1. Checks if customer has enough points and isGift not false
         int giftPoint = 100;
-        if (getPoint() < giftPoint)
+        if (getPoint() < giftPoint || !item.isGift)
             return false;
         
-        // 2. Take only the items that can be used as a gift
-        ArrayList<Item> giftItems = new ArrayList<>();
-        for (Item bookStoreItem : items) {
-            if (!bookStoreItem.isGift) {
-                if (bookStoreItem.equals(item)) 
-                    return false;
-            }
-            else {
-                if (bookStoreItem.amount > 0) {
-                    if (bookStoreItem.equals(item)) 
-                        giftItems.add(bookStoreItem);
-                }
-                else                            // if store item is out of stock
-                    return false;
-            }
-        }
-        
-        // 3. Find the item in the gift items collection 
-        boolean isItemFound;
-        for (Item giftItem : giftItems) {
-            isItemFound = false;
-            for (Item bookStoreItem : items) {
-                if (giftItem.equals(item) && giftItem.equals(bookStoreItem)) {
-                    isItemFound = true;
-                    bookStoreItem.amount--;        // reduce amount of that item
-                    break;
-                }
-            }
-            if (isItemFound)        // only need to find 1 item, stop when found
+        // 2. Check if item isGift and item has enough amount in the bookstore
+        for (Item bookStoreItem : items) 
+            if (bookStoreItem.equals(item) && bookStoreItem.amount > 0) {
+                bookStoreItem.amount--;        // reduce amount of that item
                 break;
-        }
+            }
         
-        // 4. Pay gift with points(reduce customer points)
+        // 3. Pay gift with points(reduce customer points)
         setPoint(getPoint() - giftPoint);
                
         return true;
@@ -270,46 +227,5 @@ public abstract class User extends Person implements Gift {
 
     public void setPoint(int point) {
         this.point = point;
-    }
-    public static void main(String[] args) {
-        Person p1 = new Person("Haruki Murakami", "Male", "123456789", "harukimurakami@yahoo.com");
-        Person p2 = new Person("John Green", "Male", "987654321", "johngreen@gmail.com");
-       
-        ArrayList<Person> a1 = new ArrayList<>();
-        ArrayList<Person> a2 = new ArrayList<>();
-        a1.add(p1);
-        a1.add(p2);
-       
-        Book b1 = new Book("Kafka On The Shore", a1, 17.99, 50, "Fiction", false);
-        Book b3 = new Book("Kafka On The Shore", a1, 17.99, 150, "Fiction", false);
-        Book b2 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", false);
-        Book b4 = new Book("The Invisible life of Addie LaRue", a1, 17.99, 50, "Fiction", true);
-        Book b5 = new Book("Nowegian Wood", a1, 17.99, 60, "Fiction", true);
-       // Book b6 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
-        Book b7 = new Book("Colorless Tsukuru Tazaki", a1, 17.99, 50, "Fiction", true);
-        Book b8 = new Book("Echo North", a1, 17.99, 50, "Fiction", false);
-        Cd c1 = new Cd("After Laughter", p1, 9.14, 50, "Pop Rock, New wave, Synth-pop, Power pop", false);
-        Cd c2 = new Cd("Love in Tokyo", p2, 10.53, 1, "Alternative/Indie", true);
-        Cd c3 = new Cd("Viva La Vida or Death and All His Friends", p1, 8.97, 1, "Rock", true);
-
-        items.add(b4); //true
-        items.add(b3); //false
-        items.add(c1);//false
-        items.add(c2);//true
-        items.add(c3); //false
-        items.add(b2); //false
-        items.add(b1); //false
-        items.add(b8); // true
-        items.add(c3);//false
-
-       
-        ArrayList<Item> items1 = new ArrayList<>();
-        Customer cu2 = new Customer(1, items1, 100, "Maegan Young", "Female", 
-                "12731910", "maeganyoung@gmail.com");
-
-//        cu2.addItemTocart(b2, 4);
-//        cu2.addItemTocart(b1, 4);
-//        System.out.println(cu2);
-          System.out.println(cu2.pointToGift());
     }
 }

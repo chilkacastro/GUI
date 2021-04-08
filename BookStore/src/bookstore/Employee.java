@@ -122,7 +122,7 @@ public class Employee extends User {
         String str = "";
         
         str += super.toString();
-        str += String.format("\t%-15s : %.2f\n", "Salary", salary);
+        str += String.format("%-15s : %.2f\n", "Salary", salary);
         
         return str;
     }
@@ -142,4 +142,5 @@ public class Employee extends User {
     public static void setNextEmployeeId(int nextEmployeeId) {
         Employee.nextEmployeeId = nextEmployeeId;
     }
+
 }

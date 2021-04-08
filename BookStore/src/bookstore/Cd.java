@@ -29,7 +29,7 @@ import java.util.Objects;
  * A simple class of CD
  * @author Chilka Castro
  */
-public class Cd extends Item{
+public class Cd extends Item {
     protected String name;
     protected Person artist;
     private static int nextCdNo = 1;
