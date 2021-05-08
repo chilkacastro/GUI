@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="welcomeL" min="-2" max="-2" attributes="0"/>
+                  <Component id="gradeP" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="displayB" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <Component id="welcomeL" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="gradeP" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="displayB" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="welcomeL">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Welcome,  "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="displayB">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Display Grades"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="displayBActionPerformed"/>
+      </Events>
+    </Component>
+    <Container class="javax.swing.JPanel" name="gradeP">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="grade1HL" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="grade2HL" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="grade1L" min="-2" pref="40" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="grade2L" min="-2" pref="40" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="grade3HL" min="-2" max="-2" attributes="0"/>
+                      <Component id="grade3L" min="-2" pref="40" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="grade4HL" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="grade4L" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="grade5L" min="-2" pref="40" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                          <Component id="gradeFinalL" min="-2" pref="40" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="grade5HL" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="gradeFinalHL" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="grade1HL" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="grade2HL" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="grade3HL" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="grade4HL" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="grade5HL" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="gradeFinalHL" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="grade1L" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="grade2L" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="grade3L" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="grade4L" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="grade5L" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="gradeFinalL" alignment="1" min="-2" pref="25" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="70" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="grade1HL">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="grade 1"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade2HL">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="grade 2 "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade3HL">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="grade 3"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade4HL">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="grade 4"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade5HL">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="grade5"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade1L">
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade2L">
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade3L">
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade4L">
+        </Component>
+        <Component class="javax.swing.JLabel" name="grade5L">
+        </Component>
+        <Component class="javax.swing.JLabel" name="gradeFinalL">
+        </Component>
+        <Component class="javax.swing.JLabel" name="gradeFinalHL">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="final grade"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
